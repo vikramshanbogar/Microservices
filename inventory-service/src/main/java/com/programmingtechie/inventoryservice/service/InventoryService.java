@@ -1,6 +1,7 @@
 package com.programmingtechie.inventoryservice.service;
 
-import com.programmingtechie.inventoryservice.dto.InventoryResponse;
+import com.programmingtechie.inventoryservice.model.Inventory;
+import com.programmingtechie.inventoryservice.model.InventoryResponse;
 import com.programmingtechie.inventoryservice.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

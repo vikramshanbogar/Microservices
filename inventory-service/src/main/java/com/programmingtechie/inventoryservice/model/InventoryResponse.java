@@ -1,4 +1,4 @@
-package com.programmingtechie.orderservice.dto;
+package com.programmingtechie.inventoryservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
