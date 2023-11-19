@@ -19,9 +19,10 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest) {
+    public String placeOrder(@RequestBody OrderRequest orderRequest) {
         log.info("Placing Order");
-        return CompletableFuture.supplyAsync(() -> orderService.placeOrder(orderRequest));
+        orderService.placeOrder(orderRequest);
+        return "Order Placed Successfully";
     }
 
     public CompletableFuture<String> fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException) {
