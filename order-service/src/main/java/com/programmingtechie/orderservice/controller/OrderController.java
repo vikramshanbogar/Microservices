@@ -15,22 +15,20 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
-@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @CircuitBreaker(name="inventory", fallbackMethod = "fallbackMethod")
-    public String  placeOrder(@RequestBody OrderRequest orderRequest) {
-        log.info("Placing Order");
-        orderService.placeOrder(orderRequest);
-        return "Order Placed Successfully";
+    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
+    @TimeLimiter(name = "inventory")
+    @Retry(name = "inventory")
+    public CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest) {
+        return CompletableFuture.supplyAsync(() -> orderService.placeOrder(orderRequest));
     }
 
-    public String fallbackMethod(RuntimeException runtimeException){
-        return "Oops! Something went wrong, please try again later!";
+    public CompletableFuture<String> fallbackMethod(RuntimeException runtimeException) {
+        return CompletableFuture.supplyAsync(() -> "Oops! Something went wrong, please try again later!");
     }
 }

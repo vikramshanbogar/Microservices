@@ -1,6 +1,7 @@
 package com.programmingtechie.inventoryservice.service;
 
 import com.programmingtechie.inventoryservice.dto.InventoryResponse;
+import com.programmingtechie.inventoryservice.model.Inventory;
 import com.programmingtechie.inventoryservice.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -20,13 +21,18 @@ public class InventoryService {
     @Transactional(readOnly = true)
     @SneakyThrows
     public List<InventoryResponse> isInStock(List<String> skuCode) {
-        log.info("Checking Inventory");
+        log.info("Wait started");
+        Thread.sleep(2000);
+        log.info("Wait Ended");
         return inventoryRepository.findBySkuCodeIn(skuCode).stream()
-                .map(inventory ->
-                        InventoryResponse.builder()
-                                .skuCode(inventory.getSkuCode())
-                                .isInStock(inventory.getQuantity() > 0)
-                                .build()
-                ).toList();
+                .map(this::mapInventoryAndThrowErrorIfBadluck)
+                .toList();
+    }
+
+    private InventoryResponse mapInventoryAndThrowErrorIfBadluck(Inventory inventory) {
+        return InventoryResponse.builder()
+                .skuCode(inventory.getSkuCode())
+                .isInStock(inventory.getQuantity() > 0)
+                .build();
     }
 }
