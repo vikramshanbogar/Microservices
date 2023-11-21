@@ -22,3 +22,6 @@ Order:
 
 Inventory
 localhost:8082/api/inventory?skuCode=iphone_13_red,iphone_13_pro
+
+
+docker compose up -d
